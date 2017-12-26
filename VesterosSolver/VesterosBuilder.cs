@@ -22,49 +22,76 @@ namespace VesterosSolver
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(621, 122),
-                    name = "PYK"
+                    name = "PYK",
+                    castleLevel = 2,
+                    powerCount = 1,
+                    barrelCount = 1
                 });
 
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(572, 56),
-                    name = "IRONMAN'S BAY"
+                    name = "IRONMAN'S BAY",
+                    isSea = true
                 });
 
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(450, 46),
-                    name = "THE GOLDEN SOUND"
+                    name = "THE GOLDEN SOUND",
+                    isSea = true
                 });
 
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(583, 12),
-                    name = "SUNSET SEA"
+                    name = "SUNSET SEA",
+                    isSea = true
                 });
 
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(486, 150),
-                    name = "LANNISPORT"
+                    name = "LANNISPORT",
+                    castleLevel = 2,
+                    powerCount = 0,
+                    barrelCount = 2
                 });
 
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(552, 248),
-                    name = "RIV"
+                    name = "RIV",
+                    castleLevel = 2,
+                    powerCount = 1,
+                    barrelCount = 1
                 });
 
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(639, 239),
-                    name = "SEAGUARD"
+                    name = "SEAGUARD",
+                    castleLevel = 2,
+                    powerCount = 1,
+                    barrelCount = 1
                 });
 
                 places.Add(new Place
                 {
                     position = new System.Numerics.Vector2(723, 201),
-                    name = "GREY"
+                    name = "GREY",
+                    castleLevel = 0,
+                    powerCount = 0,
+                    barrelCount = 1
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(726, 128),
+                    name = "FLINT",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
                 });
                 #endregion
 
@@ -85,6 +112,10 @@ namespace VesterosSolver
 
                 places.AddLink("SEAGUARD", "GREY");
                 places.AddLink("GREY", "IRONMAN'S BAY");
+
+                places.AddLink("FLINT", "IRONMAN'S BAY");
+                places.AddLink("FLINT", "SUNSET SEA");
+                places.AddLink("FLINT", "GREY");
                 #endregion
 
 

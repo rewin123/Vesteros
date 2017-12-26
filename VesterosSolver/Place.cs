@@ -12,6 +12,10 @@ namespace VesterosSolver
         public string name = "";
         public Vector2 position = new Vector2();
         public List<Place> links = new List<Place>();
+        public bool isSea = false;
+        public int castleLevel = 0;
+        public int barrelCount = 0;
+        public int powerCount = 0;
 
         public Place()
         {
