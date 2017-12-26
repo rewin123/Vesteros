@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="Place.cs" />
+    <Compile Include="PlaceExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VesterosBuilder.cs" />
     <Compile Include="VisualDebug.cs" />

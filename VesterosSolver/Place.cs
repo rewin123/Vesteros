@@ -7,10 +7,17 @@ using System.Numerics;
 
 namespace VesterosSolver
 {
-    class Place
+    public class Place
     {
-        public string name;
+        public string name = "";
         public Vector2 position = new Vector2();
         public List<Place> links = new List<Place>();
+
+        public Place()
+        {
+
+        }
+
+
     }
 }

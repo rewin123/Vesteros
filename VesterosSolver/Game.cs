@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace VesterosSolver
 {
-    class Game
+    public class Game
     {
-
+        public List<Place> places = new List<Place>();
     }
 }
