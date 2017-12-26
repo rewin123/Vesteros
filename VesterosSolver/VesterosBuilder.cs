@@ -21,7 +21,7 @@ namespace VesterosSolver
                 #region Раставляем точки
                 places.Add(new Place
                 {
-                    position = new System.Numerics.Vector2(621, 102),
+                    position = new System.Numerics.Vector2(621, 122),
                     name = "PYK"
                 });
 
