@@ -45,10 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Move.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="OrderType.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="PlaceExtension.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="PlayerState.cs" />
+    <Compile Include="PlayerType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomPlayer.cs" />
+    <Compile Include="Unit.cs" />
+    <Compile Include="UnitType.cs" />
     <Compile Include="VesterosBuilder.cs" />
     <Compile Include="VisualDebug.cs" />
   </ItemGroup>

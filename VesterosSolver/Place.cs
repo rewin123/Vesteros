@@ -16,12 +16,19 @@ namespace VesterosSolver
         public int castleLevel = 0;
         public int barrelCount = 0;
         public int powerCount = 0;
+        public List<Unit> units = new List<Unit>();
+        public Order placed_order = null;
+
+        public int mark = 0;
 
         public Place()
         {
 
         }
 
-
+        public override string ToString()
+        {
+            return name + ":" + (isSea ? "sea" : "land");
+        }
     }
 }

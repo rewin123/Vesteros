@@ -93,6 +93,171 @@ namespace VesterosSolver
                     powerCount = 0,
                     barrelCount = 0
                 });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(508, 317),
+                    name = "HARRENHAL",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(474, 237),
+                    name = "STONEY",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(384, 148),
+                    name = "SEAROAD",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(397, 263),
+                    name = "BLACKWATER",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(587, 363),
+                    name = "MOON",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(484, 382),
+                    name = "POINT",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(397, 367),
+                    name = "KING",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(313, 288),
+                    name = "REACH",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(290, 168),
+                    name = "HIGHGARDEN",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(648, 312),
+                    name = "TWINS",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(728, 270),
+                    name = "MOAN",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(930, 246),
+                    name = "WINTERFELL",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(882, 141),
+                    name = "STONY",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(877, 29),
+                    name = "BAY_OF_ICE",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0,
+                    isSea = true
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(847, 351),
+                    name = "WHITE",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(672, 400),
+                    name = "FINGERS",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(20, 18),
+                    name = "SUMMER",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0,
+                    isSea = true
+                });
+
+                places.Add(new Place
+                {
+                    position = new System.Numerics.Vector2(128, 71),
+                    name = "REDWINE",
+                    castleLevel = 1,
+                    powerCount = 0,
+                    barrelCount = 0,
+                    isSea = true
+                });
                 #endregion
 
                 #region Создаем пути между землями
@@ -116,6 +281,14 @@ namespace VesterosSolver
                 places.AddLink("FLINT", "IRONMAN'S BAY");
                 places.AddLink("FLINT", "SUNSET SEA");
                 places.AddLink("FLINT", "GREY");
+
+                places.AddLink("SEAROAD", "LANNISPORT");
+                places.AddLink("SEAROAD", "SUNSET SEA");
+                places.AddLink("SEAROAD", "STONEY");
+                places.AddLink("SEAROAD", "REACH");
+                places.AddLink("SEAROAD", "BLACKWATER");
+                places.AddLink("SEAROAD", "REACH");
+                places.AddLink("SEAROAD", "HIGHGARDEN");
                 #endregion
 
 

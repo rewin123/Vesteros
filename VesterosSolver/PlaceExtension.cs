@@ -21,5 +21,13 @@ namespace VesterosSolver
 
             places.AddLink(pos1, pos2);
         }
+
+        public static void Unmark(this List<Place> places)
+        {
+            for(int i = 0;i < places.Count;i++)
+            {
+                places[i].mark = 0;
+            }
+        }
     }
 }
