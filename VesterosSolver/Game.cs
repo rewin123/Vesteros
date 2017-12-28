@@ -224,7 +224,14 @@ namespace VesterosSolver
         List<Place> GetBoatMoves(Place place, Unit unit, bool attack)
         {
             List<Place> moves = new List<Place>();
-            moves.Add(place);
+
+            if (attack)
+                moves.Add(place);
+            else if (place.units.Count == 0)
+                moves.Add(place);
+            else if (place.units[0].player == unit.player)
+                moves.Add(place);
+
             if (attack)
             {
                 for (int i = 0; i < place.links.Count; i++)
@@ -263,7 +270,14 @@ namespace VesterosSolver
             places.Unmark();
             place.mark = 1;
             List<Place> moves = new List<Place>();
-            moves.Add(place);
+
+            if(attack)
+                moves.Add(place);
+            else if (place.units.Count == 0)
+                moves.Add(place);
+            else if (place.units[0].player == unit.player)
+                moves.Add(place);
+
             bool boat = unit.type == UnitType.Boat;
             for (int i = 0; i < place.links.Count; i++)
             {
@@ -277,7 +291,16 @@ namespace VesterosSolver
                         }
                     }
                 }
-                else moves.Add(place.links[i]);
+                else
+                {
+                    if(attack)
+                        moves.Add(place.links[i]);
+                    else if (place.links[i].units.Count == 0)
+                        moves.Add(place.links[i]);
+                    else if(place.links[i].units[0].player == unit.player)
+                        moves.Add(place.links[i]);
+
+                }
             }
 
             return moves;

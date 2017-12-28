@@ -100,5 +100,267 @@ namespace Vesteros
             pictureBox1.Image = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
             listBox1.Items.Insert(0, game.gamePhase);
         }
+
+        private void symmetricButton_Click(object sender, EventArgs e)
+        {
+            game = new Game();
+
+            List<Place> places = game.places;
+
+            places.Add(new Place
+            {
+                name = "L_Sea",
+                position = new Vector2(0.4f, 0.25f),
+                isSea = true,
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Boat,
+                        player = PlayerType.Black
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "R_Sea",
+                position = new Vector2(0.6f, 0.25f),
+                isSea = true,
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Boat,
+                        player = PlayerType.Red
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "L_Castle",
+                position = new Vector2(0.2f, 0.25f),
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Black
+                    },
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Black
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "L_Middle",
+                position = new Vector2(0.2f, 0.5f)
+            });
+
+            places.Add(new Place
+            {
+                name = "R_Castle",
+                position = new Vector2(0.8f, 0.25f),
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Red
+                    },
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Red
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "R_Middle",
+                position = new Vector2(0.8f, 0.5f)
+            });
+
+            places.Add(new Place
+            {
+                name = "Center",
+                position = new Vector2(0.5f, 0.75f)
+            });
+
+            places.AddLink("L_Sea", "R_Sea");
+
+            places.AddLink("R_Castle", "R_Sea");
+            places.AddLink("R_Middle", "R_Sea");
+            places.AddLink("Center", "R_Sea");
+
+            places.AddLink("L_Castle", "L_Sea");
+            places.AddLink("L_Middle", "L_Sea");
+            places.AddLink("Center", "L_Sea");
+
+            places.AddLink("L_Middle", "Center");
+            places.AddLink("L_Middle", "L_Castle");
+
+            places.AddLink("R_Middle", "Center");
+            places.AddLink("R_Middle", "R_Castle");
+
+            game.players = new List<Player>()
+            {
+                new RandomPlayer
+                {
+                    type = PlayerType.Black
+                },
+                new RandomPlayer
+                {
+                    type = PlayerType.Red
+                }
+            };
+
+            pictureBox1.Image = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
+
+            //timer1.Start();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            game.Move();
+            pictureBox1.Image = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            game = new Game();
+
+            List<Place> places = game.places;
+
+            places.Add(new Place
+            {
+                name = "L_Sea",
+                position = new Vector2(0.4f, 0.25f),
+                isSea = true,
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Boat,
+                        player = PlayerType.Black
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "R_Sea",
+                position = new Vector2(0.6f, 0.25f),
+                isSea = true,
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Boat,
+                        player = PlayerType.Red
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "L_Castle",
+                position = new Vector2(0.2f, 0.25f),
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Black
+                    },
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Black
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "L_Middle",
+                position = new Vector2(0.2f, 0.5f)
+            });
+
+            places.Add(new Place
+            {
+                name = "R_Castle",
+                position = new Vector2(0.8f, 0.25f),
+                units = new List<Unit>()
+                {
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Red
+                    },
+                    new Unit
+                    {
+                        type = UnitType.Soldat,
+                        player = PlayerType.Red
+                    }
+                }
+            });
+
+            places.Add(new Place
+            {
+                name = "R_Middle",
+                position = new Vector2(0.8f, 0.5f)
+            });
+
+            places.Add(new Place
+            {
+                name = "Center",
+                position = new Vector2(0.5f, 0.75f)
+            });
+
+            places.AddLink("L_Sea", "R_Sea");
+
+            places.AddLink("R_Castle", "R_Sea");
+            places.AddLink("R_Middle", "R_Sea");
+            places.AddLink("Center", "R_Sea");
+
+            places.AddLink("L_Castle", "L_Sea");
+            places.AddLink("L_Middle", "L_Sea");
+            places.AddLink("Center", "L_Sea");
+
+            places.AddLink("L_Middle", "Center");
+            places.AddLink("L_Middle", "L_Castle");
+
+            places.AddLink("R_Middle", "Center");
+            places.AddLink("R_Middle", "R_Castle");
+
+            game.players = new List<Player>()
+            {
+                new RandomPlayer
+                {
+                    type = PlayerType.Black
+                },
+                new RandomPlayer
+                {
+                    type = PlayerType.Red
+                }
+            };
+
+            int count = 0;
+            DateTime start = DateTime.Now;
+            while((DateTime.Now - start).Seconds < 1)
+            {
+                game.Move();
+                count++;
+            }
+
+            listBox1.Items.Insert(0, "Count:" + count);
+        }
     }
 }

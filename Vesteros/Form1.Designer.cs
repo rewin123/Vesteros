@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.symmetricButton = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,11 +86,37 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // symmetricButton
+            // 
+            this.symmetricButton.Location = new System.Drawing.Point(1100, 102);
+            this.symmetricButton.Name = "symmetricButton";
+            this.symmetricButton.Size = new System.Drawing.Size(152, 23);
+            this.symmetricButton.TabIndex = 5;
+            this.symmetricButton.Text = "Симметричный мир";
+            this.symmetricButton.UseVisualStyleBackColor = true;
+            this.symmetricButton.Click += new System.EventHandler(this.symmetricButton_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(1101, 132);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(150, 23);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Speedtest";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1276, 600);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.symmetricButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button2);
@@ -106,6 +136,9 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button symmetricButton;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button button4;
     }
 }
 

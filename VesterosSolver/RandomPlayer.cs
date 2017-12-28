@@ -48,12 +48,16 @@ namespace VesterosSolver
 
         public override int MakeOrder(Game game)
         {
-            int pos = r.Next(orders.Count);
+            if (orders.Count > 0)
+            {
+                int pos = r.Next(orders.Count);
 
-            game.MakeOrder(this, orders[pos].place);
-            
-            orders.RemoveAt(pos);
-            return 1;
+                game.MakeOrder(this, orders[pos].place);
+
+                orders.RemoveAt(pos);
+                return 1;
+            }
+            else return 0;
         }
 
         public override void MakeMove(Game game, Move move)
@@ -63,9 +67,17 @@ namespace VesterosSolver
                 case PlayerState.AttackMove:
                     AttackMove(game, move);
                     break;
+                case PlayerState.RetreatMove:
+                    RetreatMove(game, move);
+                    break;
             }
         }
 
+        /// <summary>
+        /// Внутрифазовый ход аттаки
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="move"></param>
         void AttackMove(Game game, Move move)
         {
             List<Unit> units = move.active_units;
@@ -84,6 +96,16 @@ namespace VesterosSolver
                 places = game.GetMoves(move.active_place, units[0], true);
                 int land = r.Next(places.Count);
                 game.Attack(places[land], units);
+            }
+        }
+
+        void RetreatMove(Game game, Move move)
+        {
+            var units = move.active_units;
+            var places = game.GetMoves(move.active_place, units[0], false);
+            if(places.Count > 0)
+            {
+                places[r.Next(places.Count)].units.AddRange(units);
             }
         }
     }

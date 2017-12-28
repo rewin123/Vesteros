@@ -15,7 +15,7 @@ namespace VesterosSolver
 
         public void Draw(Graphics gr, float x, float y, int size)
         {
-            Brush brush = Brushes.White;
+            Brush brush = Player.PlayerBrush(player);
             
             switch(type)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,18 @@ namespace VesterosSolver
         public PlayerType type;
         public List<Order> orders = new List<Order>();
         
+        public static Brush PlayerBrush(PlayerType type)
+        {
+            switch(type)
+            {
+                case PlayerType.Black:
+                    return Brushes.Black;
+                case PlayerType.Red:
+                    return Brushes.Red;
+                default:
+                    return Brushes.Wheat;
+            }
+        }
 
         public virtual void MakeMove(Game game, Move move)
         {
