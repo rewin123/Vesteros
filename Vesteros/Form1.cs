@@ -33,10 +33,11 @@ namespace Vesteros
         private void button2_Click(object sender, EventArgs e)
         {
             game = new Game();
+            game.players.Add(new RandomPlayer());
             game.places.Add(new Place
             {
                 position = new Vector2(0.1f, 0.5f),
-                name = "1"
+                name = "1",
             });
 
             game.places.Add(new Place
@@ -91,6 +92,13 @@ namespace Vesteros
             }
 
             listBox1.Items.Insert(0, count + ":" + 1.0f/count);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            game.Move();
+            pictureBox1.Image = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
+            listBox1.Items.Insert(0, game.gamePhase);
         }
     }
 }

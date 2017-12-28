@@ -46,27 +46,35 @@ namespace VesterosSolver
             }
             else
             {
-                inMoveActions[0].player.MakeMove(inMoveActions[0]);
+                inMoveActions[0].player.MakeMove(this, inMoveActions[0]);
                 inMoveActions.RemoveAt(0);
             }
         }
 
-        /// <summary>
-        /// Фозращает возможные движения юнита из этого места
-        /// </summary>
-        /// <param name="place"></param>
-        /// <param name="unit"></param>
-        /// <returns></returns>
-        public List<Place> GetMoves(Place place, Unit unit)
+        public void MakeOrder(Player who, Place place)
         {
-            if (unit.type == UnitType.Boat)
-                return GetBoatMoves(place, unit);
-            else
-            {
-                return GetGroundMoves(place, unit);
-            }
+            var order = place.placed_order;
+            place.placed_order = null;
             
+            switch(order.type)
+            {
+                case OrderType.Attack:
+                    List<Unit> units = GetToActive(place);
+                    Move m = new Move
+                    {
+                        active_units = units,
+                        active_place = place,
+                        playerState = PlayerState.AttackMove,
+                        player = who,
+                        modifier = order.power
+                    };
+                    
+                    inMoveActions.Add(m);
+                    break;
+            }
         }
+
+        
 
         /// <summary>
         /// Забирает юниты из области
@@ -86,97 +94,125 @@ namespace VesterosSolver
         /// </summary>
         /// <param name="to"></param>
         /// <param name="units"></param>
-        void Attack(Place to, List<Unit> units)
+        public void Attack(Place to, List<Unit> units)
         {
-            int attack_power = 0;
-            int defence_power = 0;
-
-            int castle_attribute = to.castleLevel > 0 ? 4 : 0;
-
-            for(int i = 0;i < units.Count;i++)
+            if (to.units.Count == 0)
             {
-                switch(units[i].type)
-                {
-                    case UnitType.Horse:
-                        attack_power += 2;
-                        break;
-                    case UnitType.Siege:
-                        attack_power += castle_attribute;
-                        break;
-                    default:
-                        attack_power += 1;
-                        break;
-                }
+                to.units.AddRange(units);
             }
-
-            List<Unit> defended_unit = to.units;
-            for(int i =0;i < defended_unit.Count;i++)
+            else if (to.units[0].player == units[0].player)
             {
-                if (!defended_unit[i].isLying)
+                to.units.AddRange(units);
+            }
+            else
+            {
+                int attack_power = 0;
+                int defence_power = 0;
+
+                int castle_attribute = to.castleLevel > 0 ? 4 : 0;
+
+                for (int i = 0; i < units.Count; i++)
                 {
-                    switch (defended_unit[i].type)
+                    switch (units[i].type)
                     {
                         case UnitType.Horse:
-                            defence_power += 2;
+                            attack_power += 2;
                             break;
                         case UnitType.Siege:
-                            defence_power += castle_attribute;
+                            attack_power += castle_attribute;
                             break;
                         default:
-                            defence_power += 1;
+                            attack_power += 1;
                             break;
                     }
                 }
-            }
 
-            if(attack_power > defence_power)
-            {
-                for(int i = 0;i < to.units.Count;i++)
+                List<Unit> defended_unit = to.units;
+                for (int i = 0; i < defended_unit.Count; i++)
                 {
-                    if (to.units[i].isLying)
+                    if (!defended_unit[i].isLying)
                     {
-                        to.units.RemoveAt(i);
-                        i--;
+                        switch (defended_unit[i].type)
+                        {
+                            case UnitType.Horse:
+                                defence_power += 2;
+                                break;
+                            case UnitType.Siege:
+                                defence_power += castle_attribute;
+                                break;
+                            default:
+                                defence_power += 1;
+                                break;
+                        }
                     }
-                    else to.units[i].isLying = true;
                 }
 
-                List<Unit> active = GetToActive(to);
-                if(active.Count > 0)
+                if (attack_power > defence_power)
                 {
-                    PlayerType p_type = active[0].player;
-                    int p_index = players.FindIndex((player) => player.type == p_type);
-                    Player p = players[p_index];
+                    for (int i = 0; i < to.units.Count; i++)
+                    {
+                        if (to.units[i].isLying)
+                        {
+                            to.units.RemoveAt(i);
+                            i--;
+                        }
+                        else to.units[i].isLying = true;
+                    }
+
+                    List<Unit> active = GetToActive(to);
+                    if (active.Count > 0)
+                    {
+                        PlayerType p_type = active[0].player;
+                        int p_index = players.FindIndex((player) => player.type == p_type);
+                        Player p = players[p_index];
+                        Move move = new Move
+                        {
+                            player = p,
+                            playerState = PlayerState.RetreatMove,
+                            active_units = active,
+                            active_place = to
+                        };
+
+                        inMoveActions.Add(move);
+                    }
+
+                    to.units = units;
+                }
+                else
+                {
+                    for (int i = 0; i < units.Count; i++)
+                        units[i].isLying = true;
+                    PlayerType p_type = units[0].player;
+                    Player p = players.Find((player) => player.type == p_type);
+
                     Move move = new Move
                     {
                         player = p,
                         playerState = PlayerState.RetreatMove,
-                        active_units = active,
+                        active_units = units,
                         active_place = to
                     };
 
                     inMoveActions.Add(move);
                 }
-
-                to.units = units;
             }
+        }
+
+        /// <summary>
+        /// Фозращает возможные движения юнита из этого места
+        /// </summary>
+        /// <param name="place"></param>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public List<Place> GetMoves(Place place, Unit unit, bool attack = true)
+        {
+            if (unit.type == UnitType.Boat)
+                return GetBoatMoves(place, unit, attack);
             else
             {
-                for (int i = 0; i < units.Count; i++)
-                    units[i].isLying = true;
-                PlayerType p_type = units[0].player;
-                Player p = players.Find((player) => player.type == p_type);
-
-                Move move = new Move
-                {
-                    player = p,
-                    playerState = PlayerState.RetreatMove,
-                    active_units = units,
-                    active_place = to
-                };
-
-                inMoveActions.Add(move);
+                return GetGroundMoves(place, unit, attack);
             }
+
         }
 
         /// <summary>
@@ -185,14 +221,32 @@ namespace VesterosSolver
         /// <param name="place"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-        List<Place> GetBoatMoves(Place place, Unit unit)
+        List<Place> GetBoatMoves(Place place, Unit unit, bool attack)
         {
             List<Place> moves = new List<Place>();
-            for (int i = 0; i < place.links.Count; i++)
+            moves.Add(place);
+            if (attack)
             {
-                if (place.links[i].isSea == true)
+                for (int i = 0; i < place.links.Count; i++)
                 {
-                    moves.Add(place.links[i]);
+                    if (place.links[i].isSea == true)
+                    {
+                        moves.Add(place.links[i]);
+
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < place.links.Count; i++)
+                {
+                    if (place.links[i].isSea == true)
+                    {
+                        if (place.links[i].units.Count == 0)
+                            moves.Add(place.links[i]);
+                        else if (place.links[i].units[0].player == unit.player)
+                            moves.Add(place.links[i]);
+                    }
                 }
             }
             return moves;
@@ -204,11 +258,12 @@ namespace VesterosSolver
         /// <param name="place"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-        List<Place> GetGroundMoves(Place place, Unit unit)
+        List<Place> GetGroundMoves(Place place, Unit unit, bool attack)
         {
             places.Unmark();
             place.mark = 1;
             List<Place> moves = new List<Place>();
+            moves.Add(place);
             bool boat = unit.type == UnitType.Boat;
             for (int i = 0; i < place.links.Count; i++)
             {
@@ -218,7 +273,7 @@ namespace VesterosSolver
                     {
                         if (place.links[i].units[0].player == unit.player)
                         {
-                            moves.AddRange(RecursionSeaPath(place.links[i], unit.player));
+                            moves.AddRange(RecursionSeaPath(place.links[i], unit.player, attack));
                         }
                     }
                 }
@@ -234,7 +289,7 @@ namespace VesterosSolver
         /// <param name="place"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        List<Place> RecursionSeaPath(Place place, PlayerType player)
+        List<Place> RecursionSeaPath(Place place, PlayerType player, bool attack)
         {
             List<Place> tos = new List<Place>();
             place.mark = 1;
@@ -247,13 +302,23 @@ namespace VesterosSolver
                         if (place.links[i].units.Count > 0)
                         {
                             if (place.links[i].units[0].player == player)
-                                tos.AddRange(RecursionSeaPath(place.links[i], player));
+                                tos.AddRange(RecursionSeaPath(place.links[i], player, attack));
                         }
                     }
                     else
                     {
-                        tos.Add(place.links[i]);
                         place.links[i].mark = 1;
+                        if (!attack)
+                        {
+                            tos.Add(place.links[i]);
+                        }
+                        else
+                        {
+                            if(place.links[i].units.Count == 0)
+                                tos.Add(place.links[i]);
+                            else if(place.links[i].units[0].player == player)
+                                tos.Add(place.links[i]);
+                        }
                     }
                 }
             }
@@ -269,6 +334,12 @@ namespace VesterosSolver
                 orders.Add(new Order
                 {
                     type = OrderType.Attack
+                });
+
+                orders.Add(new Order
+                {
+                    type = OrderType.Attack,
+                    power = -1
                 });
 
                 return orders;

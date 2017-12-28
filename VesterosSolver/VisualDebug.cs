@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace VesterosSolver
 {
-    public static class VisualDebug
+    public class VisualDebug
     {
         public static Pen path_pen = new Pen(Color.Violet, 3);
         public static Brush name_brush = new SolidBrush(Color.Black);
@@ -101,6 +101,10 @@ namespace VesterosSolver
                     data += "\nB: " + place.barrelCount;
                     data += "\nP: " + place.powerCount;
                     data += "\nC: " + place.castleLevel;
+                }
+                if (place.placed_order != null)
+                {
+                    data += "\n" + place.placed_order.ToString();
                 }
                 gr.DrawString(data, SystemFonts.DefaultFont, name_brush, new PointF(place.position.X * width, place.position.Y * height));
 

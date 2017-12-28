@@ -12,5 +12,11 @@ namespace VesterosSolver
         public PlayerState playerState = PlayerState.PlaceOrders;
         public List<Unit> active_units = new List<Unit>();
         public Place active_place = null;
+        public int modifier = 0;
+
+        public override string ToString()
+        {
+            return playerState + ":" + player.type;
+        }
     }
 }

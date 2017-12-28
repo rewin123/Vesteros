@@ -12,7 +12,7 @@ namespace VesterosSolver
         public List<Order> orders = new List<Order>();
         
 
-        public virtual void MakeMove(Move move)
+        public virtual void MakeMove(Game game, Move move)
         {
 
         }
@@ -28,6 +28,11 @@ namespace VesterosSolver
             return 0;
         }
 
+        /// <summary>
+        /// Выполняет приказ положенный на стол
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns>Кол-во выполненный приказов</returns>
         public virtual int MakeOrder(Game game)
         {
             return 0;

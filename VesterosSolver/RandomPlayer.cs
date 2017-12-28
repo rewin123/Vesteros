@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VesterosSolver
 {
-    class RandomPlayer : Player
+     public class RandomPlayer : Player
     {
         Random r = new Random();
         public override int PlaceOrders(Game game, List<Order> orders)
@@ -35,6 +35,8 @@ namespace VesterosSolver
                 int order_index = r.Next(orders.Count);
 
                 places[place_index].placed_order = orders[order_index];
+                orders[order_index].place = places[place_index];
+
                 this.orders.Add(orders[order_index]);
                 places.RemoveAt(place_index);
                 orders.RemoveAt(order_index);
@@ -42,6 +44,47 @@ namespace VesterosSolver
             }
 
             return orderCount;
+        }
+
+        public override int MakeOrder(Game game)
+        {
+            int pos = r.Next(orders.Count);
+
+            game.MakeOrder(this, orders[pos].place);
+            
+            orders.RemoveAt(pos);
+            return 1;
+        }
+
+        public override void MakeMove(Game game, Move move)
+        {
+            switch(move.playerState)
+            {
+                case PlayerState.AttackMove:
+                    AttackMove(game, move);
+                    break;
+            }
+        }
+
+        void AttackMove(Game game, Move move)
+        {
+            List<Unit> units = move.active_units;
+            int attackCount = r.Next(units.Count + 1);
+            List<Place> places = game.GetMoves(move.active_place, units[0], false);
+            while(units.Count > attackCount)
+            {
+                int pos = r.Next(units.Count);
+                int land = r.Next(places.Count);
+                places[land].units.Add(units[pos]);
+                units.RemoveAt(pos);
+            }
+
+            if (attackCount > 0)
+            {
+                places = game.GetMoves(move.active_place, units[0], true);
+                int land = r.Next(places.Count);
+                game.Attack(places[land], units);
+            }
         }
     }
 }
