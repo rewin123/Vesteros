@@ -28,6 +28,16 @@ namespace VesterosSolver
             }
         }
 
-        
+        public Unit Copy()
+        {
+            Unit unit = new Unit
+            {
+                type = type,
+                isLying = isLying,
+                player = player
+            };
+
+            return unit;
+        }
     }
 }

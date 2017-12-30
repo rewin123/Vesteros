@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 namespace VesterosSolver
 {
     public enum GamePhase { PlaceOrders, MakeOrders};
-    public enum PlayerType { Black, Red };
+    public enum PlayerType {None, Black, Red };
 }

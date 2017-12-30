@@ -15,7 +15,99 @@ namespace VesterosSolver
         List<Move> inMoveActions = new List<Move>();
         public GamePhase gamePhase = GamePhase.PlaceOrders;
         int orderCount = 0;
+
+        /// <summary>
+        /// Копирует игру
+        /// </summary>
+        /// <returns></returns>
+        public Game CopyRandom()
+        {
+            Game game = new Game();
+
+            game.gamePhase = gamePhase;
+            game.orderCount = orderCount;
+            game.moveIndex = moveIndex;
+
+            for(int i = 0;i < players.Count;i++)
+            {
+                Player p = new RandomPlayer();
+                p.type = players[i].type;
+                game.players.Add(p);
+            }
+            
+
+            for(int i = 0;i < places.Count;i++)
+            {
+                game.places.Add(places[i].CopyUnlinked());
+            }
+
+            for (int i = 0; i < places.Count; i++)
+            {
+                Place p = game.places[i];
+                for(int j = 0;j < p.names.Count;j++)
+                {
+                    game.places.AddLink(p.name, p.names[j]);
+                }
+                
+            }
+
+            for(int i = 0;i < players.Count;i++)
+            {
+                Player p = game.players[i];
+                List<Order> orders = players[i].orders;
+                for(int j = 0;j < orders.Count;j++)
+                {
+                    OrderData data = orders[i].CopyUnlinked();
+                    p.orders.Add(new Order
+                    {
+                        type = data.type,
+                        power = data.power,
+                        place = game.places.Find((place) => place.name == data.place)
+                    });
+                }
+            }
+
+            for(int i = 0;i < inMoveActions.Count;i++)
+            {
+                MoveData data = inMoveActions[i].CopyUnlinked();
+                Move m = new Move();
+                m.active_units = data.active_units;
+                m.modifier = data.modifier;
+                m.playerState = data.playerState;
+                m.active_place = game.places.Find((place) => place.name == data.active_place);
+                m.player = game.players.Find((player) => player.type == data.player);
+            }
+
+            return game;
+        }
         
+        /// <summary>
+        /// Возращает список земель, куда можно положить приках
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public List<Place> GetPlacesForOrders(PlayerType type)
+        {
+            List<Place> places = new List<Place>();
+            places.AddRange(this.places);
+            for (int i = 0; i < places.Count; i++)
+            {
+                Place place = places[i];
+                if (place.units.Count != 0)
+                {
+                    if (place.units[0].player == type)
+                    {
+                        continue;
+                    }
+                }
+
+                places.RemoveAt(i);
+                i--;
+            }
+
+            return places;
+        }
+
         /// <summary>
         /// Выполняет пошаговый расчет мира
         /// </summary>
@@ -81,12 +173,29 @@ namespace VesterosSolver
         /// </summary>
         /// <param name="from"></param>
         /// <returns></returns>
-        public List<Unit> GetToActive(Place from)
+        public List<Unit> GetToActive(Place from, bool placePower = true)
         {
             List<Unit> units = new List<Unit>();
             units.AddRange(from.units);
             from.units.Clear();
+
+            if (placePower)
+            {
+                if (from.isSea == false)
+                {
+                    if (units.Count != 0)
+                    {
+                        from.powerType = units[0].player;
+                    }
+                }
+            }
+
             return units;
+        }
+
+        public void MoveUnit(Place to, Unit unit)
+        {
+           
         }
 
         /// <summary>
@@ -177,6 +286,7 @@ namespace VesterosSolver
                     }
 
                     to.units = units;
+                    
                 }
                 else
                 {
@@ -277,8 +387,7 @@ namespace VesterosSolver
                 moves.Add(place);
             else if (place.units[0].player == unit.player)
                 moves.Add(place);
-
-            bool boat = unit.type == UnitType.Boat;
+            
             for (int i = 0; i < place.links.Count; i++)
             {
                 if (place.links[i].isSea)
@@ -331,7 +440,7 @@ namespace VesterosSolver
                     else
                     {
                         place.links[i].mark = 1;
-                        if (!attack)
+                        if (attack)
                         {
                             tos.Add(place.links[i]);
                         }

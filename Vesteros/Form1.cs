@@ -77,7 +77,7 @@ namespace Vesteros
             {
                 type = UnitType.Boat
             });
-
+            
 
             Bitmap map = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
             VisualDebug.DrawMoves(ref map, game, game.places[0], game.places[0].units[0], map.Width, map.Height);
@@ -99,6 +99,11 @@ namespace Vesteros
             game.Move();
             pictureBox1.Image = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
             listBox1.Items.Insert(0, game.gamePhase);
+
+            if(game.players[0] is PapaKarlo)
+            {
+                listBox1.Items.Insert(0, ((PapaKarlo)game.players[0]).lastGames);
+            }
         }
 
         private void symmetricButton_Click(object sender, EventArgs e)
@@ -211,7 +216,7 @@ namespace Vesteros
 
             game.players = new List<Player>()
             {
-                new RandomPlayer
+                new PapaKarlo
                 {
                     type = PlayerType.Black
                 },

@@ -11,6 +11,17 @@ namespace VesterosSolver
     {
         public PlayerType type;
         public List<Order> orders = new List<Order>();
+
+        public Player()
+        {
+
+        }
+
+        public Player(Player player)
+        {
+            type = player.type;
+
+        }
         
         public static Brush PlayerBrush(PlayerType type)
         {

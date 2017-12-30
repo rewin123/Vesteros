@@ -47,9 +47,11 @@
   <ItemGroup>
     <Compile Include="Enums.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="MonteKarloSum.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderType.cs" />
+    <Compile Include="PapaKarlo.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="PlaceExtension.cs" />
     <Compile Include="Player.cs" />

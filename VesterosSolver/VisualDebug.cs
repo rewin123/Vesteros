@@ -108,9 +108,8 @@ namespace VesterosSolver
                 }
                 gr.DrawString(data, SystemFonts.DefaultFont, name_brush, new PointF(place.position.X * width, place.position.Y * height));
 
-                if (!place.isSea)
-                    gr.FillEllipse(Brushes.Green, places[i].position.X * width - 3, places[i].position.Y * height - 3, 6, 6);
-                else gr.FillEllipse(Brushes.Blue, places[i].position.X * width - 3, places[i].position.Y * height - 3, 6, 6);
+                gr.FillEllipse(Player.PlayerBrush(place.powerType), places[i].position.X * width - 3, places[i].position.Y * height - 3, 6, 6);
+                
             }
 
             return map;
