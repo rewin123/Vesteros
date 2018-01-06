@@ -124,5 +124,93 @@ namespace VesterosSolver
 
             return orderCount;
         }
+
+        public override int MakeOrder(Game game)
+        {
+            lastGames = 0;
+            MonteKarloSum[] sums = new MonteKarloSum[orders.Count];
+            for (int i = 0; i < sums.Length; i++)
+                sums[i] = new MonteKarloSum();
+            DateTime start = DateTime.Now;
+            while ((DateTime.Now - start).TotalSeconds < SecondsToThink)
+            {
+                lastGames++;
+                Game today = game.CopyRandom();
+                RandomPlayer my_copy = (RandomPlayer)today.players.Find((p) => p.type == type);
+                today.Move();
+                int pos = my_copy.selectedOrderToMove;
+
+                for(int i = 0;i < depth;i++)
+                {
+                    today.Move();
+                }
+
+                sums[pos].Add(CalcScore(ref today));
+            }
+
+            float max = 0;
+            int indexMax = 0;
+            for(int i = 0;i < orders.Count;i++)
+            {
+                float avr = sums[i].Medium;
+                if(!float.IsNaN(avr))
+                {
+                    if(avr > max)
+                    {
+                        max = avr;
+                        indexMax = i;
+                    }
+                }
+            }
+
+            game.MakeOrder(this, orders[indexMax].place);
+            orders.RemoveAt(indexMax);
+
+            return 1;
+        }
+
+        public override void MakeMove(Game game, Move move)
+        {
+           switch(move.playerState)
+            {
+                case PlayerState.AttackMove:
+                    AttackMove(game, move);
+                    break;
+            }
+        }
+
+        void AttackMove(Game game, Move move)
+        {
+            if (move.active_units.Count == 0)
+                return;
+            List<Unit> units = move.active_units;
+            int attackCount = r.Next(units.Count + 1);
+            List<Place> places = game.GetMoves(move.active_place, units[0], false);
+            while (units.Count > attackCount)
+            {
+                int pos = r.Next(units.Count);
+                int land = r.Next(places.Count);
+                places[land].units.Add(units[pos]);
+                units.RemoveAt(pos);
+            }
+
+            if (attackCount > 0)
+            {
+                places = game.GetMoves(move.active_place, units[0], true);
+                int land = r.Next(places.Count);
+                game.Attack(places[land], units);
+            }
+        }
+
+        int CalcScore(ref Game game)
+        {
+            int my_lands = 0;
+            for (int i = 0; i < game.places.Count; i++)
+            {
+                my_lands += game.places[i].powerType == type ? 1 : 0;
+            }
+
+            return my_lands;
+        }
     }
 }

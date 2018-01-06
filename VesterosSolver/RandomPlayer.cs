@@ -8,6 +8,10 @@ namespace VesterosSolver
 {
      public class RandomPlayer : Player
     {
+        public int selectedOrderToMove = 0;
+        public int selected_attackCount = 0;
+        public int selected_place = 0;
+
         Random r = new Random();
         public override int PlaceOrders(Game game, List<Order> orders)
         {
@@ -52,6 +56,10 @@ namespace VesterosSolver
             {
                 int pos = r.Next(orders.Count);
 
+                selectedOrderToMove = pos;
+
+                orders[pos].place.placed_order = orders[pos];
+
                 game.MakeOrder(this, orders[pos].place);
 
                 orders.RemoveAt(pos);
@@ -80,6 +88,8 @@ namespace VesterosSolver
         /// <param name="move"></param>
         void AttackMove(Game game, Move move)
         {
+            if (move.active_units.Count == 0)
+                return;
             List<Unit> units = move.active_units;
             int attackCount = r.Next(units.Count + 1);
             List<Place> places = game.GetMoves(move.active_place, units[0], false);

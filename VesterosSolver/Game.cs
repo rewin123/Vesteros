@@ -64,6 +64,7 @@ namespace VesterosSolver
                         power = data.power,
                         place = game.places.Find((place) => place.name == data.place)
                     });
+                    p.orders.Last().place.placed_order = p.orders.Last();
                 }
             }
 
