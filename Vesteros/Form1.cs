@@ -96,13 +96,23 @@ namespace Vesteros
 
         private void button3_Click(object sender, EventArgs e)
         {
-            game.Move();
-            pictureBox1.Image = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
-            listBox1.Items.Insert(0, game.gamePhase);
-
-            if(game.players[0] is PapaKarlo)
+            try
             {
-                listBox1.Items.Insert(0, ((PapaKarlo)game.players[0]).lastGames);
+                game.Move();
+
+                pictureBox1.Image = VisualDebug.DrawPlaces(game.places, pictureBox1.Width, pictureBox1.Height);
+                listBox1.Items.Insert(0, game.gamePhase);
+
+                if (game.players[0] is PapaKarlo)
+                {
+                    listBox1.Items.Insert(0, ((PapaKarlo)game.players[0]).lastGames);
+                }
+            }
+            catch(GameException excp)
+            {
+                pictureBox1.Image = VisualDebug.DrawPlaces(excp.game.places, pictureBox1.Width, pictureBox1.Height);
+                listBox1.Items.Insert(0, excp.game.gamePhase);
+                listBox1.Items.Insert(0, excp.exception.ToString());
             }
         }
 

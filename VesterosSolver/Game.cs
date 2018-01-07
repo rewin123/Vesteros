@@ -12,7 +12,7 @@ namespace VesterosSolver
         public List<Player> players = new List<Player>();
 
         int moveIndex = 0;
-        List<Move> inMoveActions = new List<Move>();
+        public List<Move> inMoveActions = new List<Move>();
         public GamePhase gamePhase = GamePhase.PlaceOrders;
         int orderCount = 0;
 
@@ -57,7 +57,7 @@ namespace VesterosSolver
                 List<Order> orders = players[i].orders;
                 for(int j = 0;j < orders.Count;j++)
                 {
-                    OrderData data = orders[i].CopyUnlinked();
+                    OrderData data = orders[j].CopyUnlinked();
                     p.orders.Add(new Order
                     {
                         type = data.type,
@@ -77,6 +77,8 @@ namespace VesterosSolver
                 m.playerState = data.playerState;
                 m.active_place = game.places.Find((place) => place.name == data.active_place);
                 m.player = game.players.Find((player) => player.type == data.player);
+
+                game.inMoveActions.Add(m);
             }
 
             return game;
@@ -140,6 +142,42 @@ namespace VesterosSolver
             else
             {
                 inMoveActions[0].player.MakeMove(this, inMoveActions[0]);
+                inMoveActions.RemoveAt(0);
+            }
+        }
+
+        /// <summary>
+        /// Пропускает ход
+        /// </summary>
+        public void SkipMove(int delta_order_count)
+        {
+            orderCount += delta_order_count;
+            if (inMoveActions.Count == 0)
+            {
+                if (gamePhase == GamePhase.PlaceOrders)
+                {
+                    //orderCount += players[moveIndex].PlaceOrders(this, StandartOrders);
+                    moveIndex++;
+                    if (moveIndex == players.Count)
+                    {
+                        moveIndex = 0;
+                        gamePhase = GamePhase.MakeOrders;
+                    }
+                }
+                else
+                {
+                    //orderCount -= players[moveIndex].MakeOrder(this);
+                    moveIndex++;
+                    if (moveIndex == players.Count)
+                        moveIndex = 0;
+
+                    if (orderCount == 0)
+                        gamePhase = GamePhase.PlaceOrders;
+                }
+            }
+            else
+            {
+                //inMoveActions[0].player.MakeMove(this, inMoveActions[0]);
                 inMoveActions.RemoveAt(0);
             }
         }

@@ -9,10 +9,8 @@ namespace VesterosSolver
      public class RandomPlayer : Player
     {
         public int selectedOrderToMove = 0;
-        public int selected_attackCount = 0;
-        public int selected_place = 0;
-
         Random r = new Random();
+
         public override int PlaceOrders(Game game, List<Order> orders)
         {
             int orderCount = 0;
